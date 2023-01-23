@@ -3,7 +3,6 @@ from itertools import combinations
 import sklearn
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import load_breast_cancer
-from sklearn.datasets import load_boston
 from tqdm import tqdm
 from sklearn.feature_selection import SelectKBest,chi2,f_regression,f_classif
 import pandas as pd
@@ -551,13 +550,5 @@ class Dominance_Datasets:
 		breast_cancer_data['target_names']=breast_cancer_data['target'].map(target_dict)
 		return breast_cancer_data.iloc[:,:-1]
 	
-	@classmethod
-	def get_boston(cls):
-		print("""The copy of Boston Housing Dataset is downloaded from: https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html""")
-		print("""Internally using load_boston function from sklearn.datasets """)
-		boston_data=pd.DataFrame(data=load_boston()['data'],columns=load_boston()['feature_names'])
-		boston_data['House_Price']=load_boston()['target']
-		return boston_data
-
 	def __init__(self):
 		print("Datasets for Dominance Analysis")
