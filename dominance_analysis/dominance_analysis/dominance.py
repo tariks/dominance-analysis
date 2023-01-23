@@ -27,11 +27,17 @@ init_notebook_mode(connected=True)
 
 class Dominance:
 	"""docstring for ClassName"""
-	def __init__(self,data,target,top_k=None,objective=1,pseudo_r2='mcfadden',data_format = 0): # Bala changes
+	def __init__(self,data,target,top_k=None,objective=1,pseudo_r2='mcfadden',data_format = 0, dummy = False, randseed = 42): # Bala changes
 		# super(ClassName, self).__init__()
 		self.data = data
 		self.target=target
 		self.objective=objective
+        if dummy:
+            self.dummy = True
+            from scipy.stats import norm
+            self.data['dummy'] = norm.rvs(size=self.data.shape[0],seed=randseed)
+        else:
+            self.dummy = False
 #Bala changes start        
 		self.data_format = data_format
 		if(self.data_format==0):
@@ -243,6 +249,7 @@ class Dominance:
 	def get_top_k(self):
 		columns=list(self.data.columns.values)
 		columns.remove(self.target)
+        if self.dummy: columns.remove('dummy')
 		# remove intercept from top_k
 		if(self.objective):
 			top_k_vars=SelectKBest(f_regression, k=self.top_k)
@@ -255,7 +262,9 @@ class Dominance:
 			except:
 				top_k_vars=SelectKBest(f_classif, k=self.top_k)
 				top_k_vars.fit_transform(self.data[columns], self.data[self.target])
-		return [columns[i] for i in top_k_vars.get_support(indices=True)]
+		top_k_vars = [columns[i] for i in top_k_vars.get_support(indices=True)]
+        if dummy: top_k_vars.append('dummy')
+        return top_k_vars
 
 	def plot_waterfall_relative_importance(self,incremental_rsquare_df):
 		index = list(incremental_rsquare_df['Features'].values)
