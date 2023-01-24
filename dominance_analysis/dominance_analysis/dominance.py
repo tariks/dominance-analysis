@@ -35,17 +35,17 @@ class Dominance:
         if dummy:
             self.dummy = True
             from scipy.stats import norm
-            self.data['dummy'] = norm.rvs(size=self.data.shape[0],seed=seed)
+            self.data['dummy'] = norm.rvs(size=self.data.shape[0],random_state=seed)
         else:
             self.dummy = False
 #Bala changes start        
+        self.pseudo_r2=pseudo_r2
         self.data_format = data_format
         if(self.data_format==0):
 #Bala changes end            
             if(self.objective==0):
                 self.data['intercept']=1
             self.top_k=top_k if top_k else min((len(self.data.columns)-1),15)
-            self.pseudo_r2=pseudo_r2
             assert (self.top_k >1 ) and (self.top_k<(len(self.data.columns))),"Value of top_k ranges from 1 to n-1 !"
         self.complete_model_rsquare()
 
@@ -493,9 +493,9 @@ class Dominance:
                 
                 if(self.pseudo_r2=='mcfadden'):
                     print("MacFadden's R-Squared : %s "%(self.McFadden_RSquare(columns)))
-                elif(pseudo_r2=='nagelkerke'):
+                elif(self.pseudo_r2=='nagelkerke'):
                     print("Nagelkerke R-Squared : %s "%(self.Nagelkerke_Rsquare(columns)))
-                elif(pseudo_r2=='cox_and_snell'):
+                elif(self.pseudo_r2=='cox_and_snell'):
                     print("Cox and Snell R-Squared : %s "%(self.Cox_and_Snell_Rsquare(columns)))
                 else:
                     print("Estrella R-Squared : %s "%(self.Estrella(columns)))
