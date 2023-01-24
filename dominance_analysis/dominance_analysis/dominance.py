@@ -27,7 +27,7 @@ init_notebook_mode(connected=True)
 
 class Dominance:
     """docstring for ClassName"""
-    def __init__(self,data,target,top_k=None,objective=1,pseudo_r2='mcfadden',data_format = 0, dummy = False, randseed = 42): # Bala changes
+    def __init__(self,data,target,top_k=None,objective=1,pseudo_r2='mcfadden',data_format = 0, dummy = False, seed = 42): # Bala changes
         # super(ClassName, self).__init__()
         self.data = data
         self.target=target
@@ -35,7 +35,7 @@ class Dominance:
         if dummy:
             self.dummy = True
             from scipy.stats import norm
-            self.data['dummy'] = norm.rvs(size=self.data.shape[0],seed=randseed)
+            self.data['dummy'] = norm.rvs(size=self.data.shape[0],seed=seed)
         else:
             self.dummy = False
 #Bala changes start        
