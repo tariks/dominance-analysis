@@ -263,7 +263,7 @@ class Dominance:
                 top_k_vars=SelectKBest(f_classif, k=self.top_k)
                 top_k_vars.fit_transform(self.data[columns], self.data[self.target])
         top_k_vars = [columns[i] for i in top_k_vars.get_support(indices=True)]
-        if dummy: top_k_vars.append('dummy')
+        if self.dummy: top_k_vars.append('dummy')
         return top_k_vars
 
     def plot_waterfall_relative_importance(self,incremental_rsquare_df):
